@@ -1,3 +1,8 @@
+// BASIC INFO
+// The only data type you need to understand for this is a string. A string is just a series of
+// letters encapsulated by single or double quotes. If it doesn't have any quotes around it, it's a variable.
+// You don't need to touch any variables in this to make it work, just edit strings.
+
 const mongo_user = ""; // ENTER MONGO USERNAME
 const mongo_password = ""; // ENTER STRIPE USERNAME
 const stripe_secret_key = ""; // ENTER STRIPE SECRET KEY
@@ -6,21 +11,24 @@ const mongoose = require("mongoose"),
     User = require("./models/users"),
     stripe = require("stripe")(stripe_secret_key);
 
+// DON'T TOUCH THIS!!!
 mongoose
     .connect(
         `mongodb://${mongo_user}:${mongo_password}@ds135790.mlab.com:35790/tfc`,
-        { useMongoClient: true }
+        {useMongoClient: true}
     )
     .then(() => console.log(`Database connected`))
     .catch(err => console.log(`Database connection error: ${err.message}`));
 
+
+// DON'T TOUCH THIS!!!
 function createStripeUser(email, metadata) {
     stripe.customers.create(
         {
             email: email,
             metadata: metadata,
         },
-        function(err, newCustomer) {
+        function (err, newCustomer) {
             if (err) {
                 console.log(err);
                 rej(err);
@@ -32,6 +40,7 @@ function createStripeUser(email, metadata) {
     );
 }
 
+// DON'T TOUCH THIS!!!
 function createMongoUser(email, stripe_id, password, pickupDay, glass) {
     let user = new User({
         username: email,
@@ -40,7 +49,7 @@ function createMongoUser(email, stripe_id, password, pickupDay, glass) {
         pickupDay: pickupDay,
         glass: glass
     });
-    user.save(function(err) {
+    user.save(function (err) {
         console.log("saving...");
         if (err) {
             console.log(err);
@@ -50,6 +59,7 @@ function createMongoUser(email, stripe_id, password, pickupDay, glass) {
     });
 }
 
+// USE FOR ADDING NEW STRIPE USER
 const new_stripe_user = {
     // when updating this, comment out any metadata fields you don't want to include
     email: "", // REQUIRED!
@@ -65,6 +75,7 @@ const new_stripe_user = {
     }
 };
 
+// USE FOR ADDING NEW MONGO USER
 const new_mongo_user = {
     email: "",
     stripe_id: "",
@@ -73,6 +84,7 @@ const new_mongo_user = {
     glass: false, // options are: true, false - CASE SENSITIVE!!!
 };
 
+// DON'T EDIT THESE, JUST COMMENT/UNCOMMENT
 // createStripeUser(new_stripe_user.email, new_stripe_user.metadata)
 createMongoUser(new_mongo_user.email,
     new_mongo_user.stripe_id,
