@@ -17,17 +17,8 @@ mongoose
 function createStripeUser(email, metadata) {
     stripe.customers.create(
         {
-            email: "digiorgio.monique@gmail.com",
-            metadata: {
-                first_name: customer.first_name,
-                last_name: customer.last_name,
-                phone: customer.phone,
-                address: `${customer.address} ${customer.appt}`,
-                city: customer.city,
-                state: customer.state,
-                zipcode: customer.zip,
-                referral: customer.referral
-            }
+            email: email,
+            metadata: metadata,
         },
         function(err, newCustomer) {
             if (err) {
