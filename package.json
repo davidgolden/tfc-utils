@@ -1,0 +1,15 @@
+{
+  "name": "tfc-utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dostuff.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Golden",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^5.3.14",
+    "stripe": "^6.17.0"
+  }
+}
