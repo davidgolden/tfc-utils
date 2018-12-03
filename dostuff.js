@@ -7,6 +7,7 @@ const mongo_user = ""; // ENTER MONGO USERNAME
 const mongo_password = ""; // ENTER STRIPE USERNAME
 const stripe_secret_key = ""; // ENTER STRIPE SECRET KEY
 
+// DON'T TOUCH THIS!!!
 const mongoose = require("mongoose"),
     User = require("./models/users"),
     stripe = require("stripe")(stripe_secret_key);
