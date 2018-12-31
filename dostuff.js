@@ -9,7 +9,7 @@ const stripe_secret_key = ""; // ENTER STRIPE SECRET KEY
 
 // DON'T TOUCH THIS!!!
 const mongoose = require("mongoose"),
-    User = require("./models/users"),
+    User = require("./users"),
     stripe = require("stripe")(stripe_secret_key);
 
 // DON'T TOUCH THIS!!!
