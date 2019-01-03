@@ -60,6 +60,51 @@ function createMongoUser(email, stripe_id, password, pickupDay, glass) {
     });
 }
 
+// transfer all subscribers of one plan to another plan. the max you can change at once is 100, so if there are more than 100
+// you need to run it multiple times
+// I believe this will only work correctly as long as each customer you're transferring is only subscribed to one plan
+function updateSubscription(currentPlanId, newPlanId) {
+    stripe.subscriptions.list({
+        limit: 100,
+        plan: currentPlanId
+    }, function (err, subscriptions) {
+        for (var i = 0; i < subscriptions.data.length; i++) {
+            stripe.subscriptions.update(
+                subscriptions.data[i].id,
+                {
+                    cancel_at_period_end: false,
+                    items: [
+                        {
+                            id: subscriptions.data[i].items.data[0].id,
+                            plan: newPlanId,
+                        },
+                    ]
+                }, function (err, sub) {
+                    console.log('subscription: ', sub.id)
+                }
+            )
+        }
+    });
+}
+
+function updatePassword (userEmail, newPassword) {
+    User.findOne(
+        {username: userEmail},
+        function (err, user) {
+            if (err) {
+                console.log("error: ", err.message);
+            } else if (!user) {
+                console.log('no user found');
+            }
+            else {
+                user.password = newPassword;
+                user.save();
+                console.log('password updated');
+            }
+        }
+    );
+}
+
 // USE FOR ADDING NEW STRIPE USER
 const new_stripe_user = {
     // when updating this, comment out any metadata fields you don't want to include
@@ -87,11 +132,13 @@ const new_mongo_user = {
 
 // DON'T EDIT THESE, JUST COMMENT/UNCOMMENT
 // createStripeUser(new_stripe_user.email, new_stripe_user.metadata)
-createMongoUser(new_mongo_user.email,
-    new_mongo_user.stripe_id,
-    new_mongo_user.password,
-    new_mongo_user.pickupDay,
-    new_mongo_user.glass);
+// createMongoUser(new_mongo_user.email,
+//     new_mongo_user.stripe_id,
+//     new_mongo_user.password,
+//     new_mongo_user.pickupDay,
+//     new_mongo_user.glass);
+// updateSubscription(currentPlanId, newPlanId)
+// updatePassword('', '');
 
 // Steps to run a command:
 // 1. Open your terminal
